@@ -29,6 +29,11 @@ final class DeviceModel extends Model
         'published_at' => 'datetime',
     ];
 
+    public function palette(): BelongsTo
+    {
+        return $this->belongsTo(Palette::class);
+    }
+
     public function getColorDepthAttribute(): ?string
     {
         if (! $this->bit_depth) {
