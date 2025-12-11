@@ -245,6 +245,24 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'E1002_7_3',
+                'label' => 'E1002 7.3',
+                'description' => 'E1002 7.3',
+                'width' => 800,
+                'height' => 480,
+                'colors' => 2,
+                'bit_depth' => 1,
+                'scale_factor' => 1,
+                'rotation' => 0,
+                'mime_type' => 'image/png',
+                'offset_x' => 0,
+                'offset_y' => 0,
+                'published_at' => '2024-01-01 00:00:00',
+                'source' => 'api',
+                'created_at' => now(),
+                'updated_at' => now(),
+              ],
         ];
 
         // Upsert by unique 'name' to avoid duplicates and keep data fresh
@@ -278,6 +296,7 @@ return new class extends Migration
             'kobo_aura_one',
             'kobo_aura_hd',
             'inky_impression_13_3',
+            'E1002_7_3',
         ];
 
         DeviceModel::query()->whereIn('name', $names)->delete();

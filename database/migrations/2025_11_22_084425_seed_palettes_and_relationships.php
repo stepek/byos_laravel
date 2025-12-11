@@ -103,6 +103,7 @@ return new class extends Migration
             ['name' => 'seeed_e1002', 'palette_name' => 'gray-4'],
             ['name' => 'waveshare_4_26', 'palette_name' => 'gray-4'],
             ['name' => 'waveshare_7_5_bw', 'palette_name' => 'bw'],
+            ['name' => 'E1002_7_3', 'palette_name' => 'color-6a'],
         ];
 
         foreach ($models as $modelData) {
