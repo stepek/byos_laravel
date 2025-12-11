@@ -71,8 +71,5 @@ final class DeviceModel extends Model
         return null;
     }
 
-    public function palette(): BelongsTo
-    {
-        return $this->belongsTo(DevicePalette::class, 'palette_id');
-    }
+    
 }

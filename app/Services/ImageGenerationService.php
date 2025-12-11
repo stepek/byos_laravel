@@ -6,6 +6,8 @@ use App\Enums\ImageFormat;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Plugin;
+use Bnussbau\TrmnlPipeline\Data\ColorType;
+use Bnussbau\TrmnlPipeline\Data\RgbColor;
 use Bnussbau\TrmnlPipeline\Stages\BrowserStage;
 use Bnussbau\TrmnlPipeline\Stages\ImageStage;
 use Bnussbau\TrmnlPipeline\TrmnlPipeline;
@@ -127,11 +129,20 @@ class ImageGenerationService
         if ($device->deviceModel) {
             /** @var DeviceModel $model */
             $model = $device->deviceModel;
+            $paletteRecord = $model->palette()->firstOr();
+            $palette = null;
+            if ($paletteRecord) {
+                $palette = array_map(
+                    fn ($colorCode) => new RgbColor($colorCode),
+                    json_decode($paletteRecord->palette)
+                );
+            }
 
             return [
                 'width' => $model->width,
                 'height' => $model->height,
                 'colors' => $model->colors,
+                'color_type' => ColorType::fromString($model->color_type),
                 'bit_depth' => $model->bit_depth,
                 'scale_factor' => $model->scale_factor,
                 'rotation' => $model->rotation,
@@ -140,6 +151,7 @@ class ImageGenerationService
                 'offset_y' => $model->offset_y,
                 'image_format' => self::determineImageFormatFromModel($model),
                 'use_model_settings' => true,
+                'palette' => $palette,
             ];
         }
 
@@ -170,6 +182,9 @@ class ImageGenerationService
     private static function determineImageFormatFromModel(DeviceModel $model): string
     {
         // Map DeviceModel settings to ImageFormat
+        if ($model->mime_type === 'image/png' && $model->palette()) {
+            return ImageFormat::PNG_INDEXED->value;
+        }
         if ($model->mime_type === 'image/bmp' && $model->bit_depth === 1) {
             return ImageFormat::BMP3_1BIT_SRGB->value;
         }
