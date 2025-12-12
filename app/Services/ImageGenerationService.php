@@ -182,6 +182,9 @@ class ImageGenerationService
         if ($model->mime_type === 'image/png' && $model->bit_depth === 2 && $model->colors === 4) {
             return ImageFormat::PNG_2BIT_4C->value;
         }
+        if ($model->mime_type === 'image/png' && $model->bit_depth === 24) {
+            return ImageFormat::PNG_24BIT_RGB->value;
+        }
 
         // Default to AUTO for unknown combinations
         return ImageFormat::AUTO->value;
@@ -196,7 +199,8 @@ class ImageGenerationService
             ImageFormat::BMP3_1BIT_SRGB->value => 'image/bmp',
             ImageFormat::PNG_8BIT_GRAYSCALE->value,
             ImageFormat::PNG_8BIT_256C->value,
-            ImageFormat::PNG_2BIT_4C->value => 'image/png',
+            ImageFormat::PNG_2BIT_4C->value,
+            ImageFormat::PNG_24BIT_RGB->value => 'image/png',
             ImageFormat::AUTO->value => 'image/png', // Default for AUTO
             default => 'image/png',
         };
@@ -212,6 +216,7 @@ class ImageGenerationService
             ImageFormat::PNG_8BIT_GRAYSCALE->value => 2,
             ImageFormat::PNG_8BIT_256C->value => 256,
             ImageFormat::PNG_2BIT_4C->value => 4,
+            ImageFormat::PNG_24BIT_RGB->value,
             ImageFormat::AUTO->value => 2, // Default for AUTO
             default => 2,
         };
@@ -227,6 +232,7 @@ class ImageGenerationService
             ImageFormat::PNG_8BIT_GRAYSCALE->value => 1,
             ImageFormat::PNG_8BIT_256C->value => 8,
             ImageFormat::PNG_2BIT_4C->value => 2,
+            ImageFormat::PNG_24BIT_RGB->value => 24,
             ImageFormat::AUTO->value => 1, // Default for AUTO
             default => 1,
         };
